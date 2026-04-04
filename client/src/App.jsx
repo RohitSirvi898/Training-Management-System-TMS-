@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import UserManagement from './pages/UserManagement';
 import BatchManagement from './pages/BatchManagement';
+import BatchDetails from './pages/BatchDetails';
 
 // Components & Layouts
 import ProtectedRoute from './components/ProtectedRoute';
@@ -40,6 +41,7 @@ function AppRoutes() {
         
         {/* Batches - accessible by all protected users */}
         <Route path="/batches" element={<BatchManagement />} />
+        <Route path="/batches/:id" element={<BatchDetails />} />
 
         {/* Admin/Manager only */}
         <Route 

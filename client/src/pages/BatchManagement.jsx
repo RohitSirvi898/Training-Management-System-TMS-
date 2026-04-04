@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import batchService from '../services/batchService';
 import toast from 'react-hot-toast';
@@ -141,7 +142,9 @@ const BatchManagement = () => {
               
               <div className="flex justify-between items-start mb-4">
                 <div className="pr-2">
-                  <h3 className="text-lg font-bold text-white leading-tight mb-1">{batch.name}</h3>
+                  <Link to={`/batches/${batch._id}`} className="hover:text-primary-400 transition-colors">
+                    <h3 className="text-lg font-bold text-white leading-tight mb-1">{batch.name}</h3>
+                  </Link>
                   <div className="flex items-center gap-1.5 text-xs text-primary-300 bg-primary-900/30 w-fit px-2 py-0.5 rounded border border-primary-500/20">
                     <HiOutlineTag /> {batch.technology}
                   </div>
