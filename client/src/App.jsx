@@ -1,7 +1,57 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+// Pages
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import UserManagement from './pages/UserManagement';
+
+// Components & Layouts
+import ProtectedRoute from './components/ProtectedRoute';
+import DashboardLayout from './layouts/DashboardLayout';
+
 import './index.css';
+
+// ─── Public Route Guard (redirect if already logged in) ──────
+const PublicRoute = ({ children }) => {
+  const { isAuthenticated, loading } = useAuth();
+  if (loading) return null;
+  return isAuthenticated ? <Navigate to="/dashboard" replace /> : children;
+};
+
+function AppRoutes() {
+  return (
+    <Routes>
+      {/* Public */}
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+
+      {/* Protected Routes inside Layout */}
+      <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        {/* Admin/Manager only */}
+        <Route 
+          path="/users" 
+          element={
+            <ProtectedRoute allowedRoles={['admin', 'manager']}>
+              <UserManagement />
+            </ProtectedRoute>
+          } 
+        />
+      </Route>
+
+      {/* Catch-all: redirect to dashboard if logged in, else login */}
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
+  );
+}
 
 function App() {
   return (
@@ -20,32 +70,9 @@ function App() {
             error: { iconTheme: { primary: '#ef4444', secondary: '#1e293b' } },
           }}
         />
-        <Routes>
-          {/* Routes will be added as we build each module */}
-          <Route path="/" element={<PlaceholderHome />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <AppRoutes />
       </BrowserRouter>
     </AuthProvider>
-  );
-}
-
-// Temporary placeholder — will be replaced with real pages
-function PlaceholderHome() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-950">
-      <div className="text-center space-y-4">
-        <div className="text-6xl font-bold bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">
-          TMS
-        </div>
-        <p className="text-surface-300 text-lg">
-          Training Management System
-        </p>
-        <p className="text-surface-500 text-sm">
-          Backend running on port 5000 • Frontend on port 3000
-        </p>
-      </div>
-    </div>
   );
 }
 

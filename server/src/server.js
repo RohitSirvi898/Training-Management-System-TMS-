@@ -32,7 +32,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // ─── API Routes (will be added as we build modules) ──────────
-// app.use('/api/auth', require('./routes/auth.routes'));
+app.use('/api/auth', require('./routes/auth.routes'));
 // app.use('/api/batches', require('./routes/batch.routes'));
 // app.use('/api/students', require('./routes/student.routes'));
 // app.use('/api/trainers', require('./routes/trainer.routes'));
@@ -44,7 +44,7 @@ app.get('/api/health', (req, res) => {
 // app.use('/api/holidays', require('./routes/holiday.routes'));
 
 // ─── 404 Handler ─────────────────────────────────────────────
-app.use('*', (req, res) => {
+app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: `Route ${req.originalUrl} not found`,
