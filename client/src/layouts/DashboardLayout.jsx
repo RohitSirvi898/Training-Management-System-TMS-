@@ -1,7 +1,7 @@
 import { useAuth } from '../context/AuthContext';
 import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { HiOutlineLogout, HiOutlineUserCircle, HiOutlineHome, HiOutlineUsers } from 'react-icons/hi';
+import { HiOutlineLogout, HiOutlineUserCircle, HiOutlineHome, HiOutlineUsers, HiOutlineAcademicCap } from 'react-icons/hi';
 
 const DashboardLayout = () => {
   const { user, logout } = useAuth();
@@ -53,6 +53,16 @@ const DashboardLayout = () => {
                   }`}
                 >
                   <HiOutlineHome /> Dashboard
+                </Link>
+
+                {/* All authenticated can see batches */}
+                <Link 
+                  to="/batches"
+                  className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${
+                    location.pathname.includes('/batches') ? 'bg-surface-800 text-white' : 'text-surface-400 hover:text-white hover:bg-surface-800/50'
+                  }`}
+                >
+                  <HiOutlineAcademicCap /> Batches
                 </Link>
 
                 {/* Only Admin & Manager can manage users */}

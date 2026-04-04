@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import UserManagement from './pages/UserManagement';
+import BatchManagement from './pages/BatchManagement';
 
 // Components & Layouts
 import ProtectedRoute from './components/ProtectedRoute';
@@ -36,6 +37,10 @@ function AppRoutes() {
       {/* Protected Routes inside Layout */}
       <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
         <Route path="/dashboard" element={<Dashboard />} />
+        
+        {/* Batches - accessible by all protected users */}
+        <Route path="/batches" element={<BatchManagement />} />
+
         {/* Admin/Manager only */}
         <Route 
           path="/users" 
