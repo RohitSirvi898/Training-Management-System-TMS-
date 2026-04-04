@@ -9,6 +9,9 @@ import { HiOutlineArrowLeft, HiOutlineLibrary, HiOutlineUsers, HiOutlineDesktopC
 import LabsTab from '../components/batches/LabsTab';
 import TrainersTab from '../components/batches/TrainersTab';
 import StudentsTab from '../components/batches/StudentsTab';
+import HolidaysTab from '../components/batches/HolidaysTab';
+import TrainerAttendanceTab from '../components/batches/TrainerAttendanceTab';
+import StudentAttendanceTab from '../components/batches/StudentAttendanceTab';
 
 const BatchDetails = () => {
   const { id } = useParams();
@@ -48,11 +51,15 @@ const BatchDetails = () => {
   if (!batch) return null;
 
   const canManage = currentUser?.role === 'admin' || currentUser?.role === 'manager';
+  const isTrainer = currentUser?.role === 'trainer';
 
   const tabs = [
     { id: 'labs', label: 'Labs', icon: HiOutlineDesktopComputer },
     { id: 'trainers', label: 'Trainers', icon: HiOutlineLibrary },
     { id: 'students', label: 'Students', icon: HiOutlineUsers },
+    { id: 'student-attd', label: 'Student Attd.', icon: HiOutlineUsers },
+    { id: 'trainer-attd', label: 'Trainer Attd.', icon: HiOutlineLibrary },
+    { id: 'holidays', label: 'Holidays', icon: HiOutlineDesktopComputer }, 
   ];
 
   return (
@@ -81,19 +88,24 @@ const BatchDetails = () => {
 
       {/* Tabs Navigation */}
       <div className="flex border-b border-surface-700 mb-6 overflow-x-auto hide-scrollbar">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2 px-6 py-3 font-medium text-sm transition-all whitespace-nowrap border-b-2 ${
-              activeTab === tab.id 
-                ? 'text-primary-400 border-primary-400 bg-primary-500/5' 
-                : 'text-surface-400 border-transparent hover:text-white hover:border-surface-600'
-            }`}
-          >
-            <tab.icon className="text-lg" /> {tab.label}
-          </button>
-        ))}
+        {tabs.map((tab) => {
+          // Hide Trainer attendance and Holidays from non-managers
+          if ((tab.id === 'trainer-attd' || tab.id === 'holidays') && !canManage) return null;
+          
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-6 py-3 font-medium text-sm transition-all whitespace-nowrap border-b-2 ${
+                activeTab === tab.id 
+                  ? 'text-primary-400 border-primary-400 bg-primary-500/5' 
+                  : 'text-surface-400 border-transparent hover:text-white hover:border-surface-600'
+              }`}
+            >
+              {tab.label}
+            </button>
+          )
+        })}
       </div>
 
       {/* Tab Content */}
@@ -101,6 +113,9 @@ const BatchDetails = () => {
         {activeTab === 'labs' && <LabsTab batchId={batch._id} canManage={canManage} />}
         {activeTab === 'trainers' && <TrainersTab batchId={batch._id} canManage={canManage} />}
         {activeTab === 'students' && <StudentsTab batchId={batch._id} canManage={canManage} />}
+        {activeTab === 'holidays' && <HolidaysTab batchId={batch._id} canManage={canManage} />}
+        {activeTab === 'trainer-attd' && <TrainerAttendanceTab batchId={batch._id} canManage={canManage} />}
+        {activeTab === 'student-attd' && <StudentAttendanceTab batchId={batch._id} canManage={canManage} isTrainer={isTrainer} />}
       </div>
     </div>
   );
