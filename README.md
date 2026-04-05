@@ -88,4 +88,4 @@ npm run dev
 For further information regarding specs and requirements, refer to the included `Documentation.pdf` present at the root of the project.
 
 ## 📜 License
-ISC License
+No License

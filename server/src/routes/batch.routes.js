@@ -21,6 +21,9 @@ const studentRoutes = require('./student.routes');
 const holidayRoutes = require('./holiday.routes');
 const trainerAttendanceRoutes = require('./trainer-attendance.routes');
 const studentAttendanceRoutes = require('./student-attendance.routes');
+const examRoutes = require('./exam.routes');
+const resultRoutes = require('./result.routes');
+const certificateRoutes = require('./certificate.routes');
 
 // Apply protection to all batch routes
 router.use(protect);
@@ -35,6 +38,11 @@ router.use('/:batchId/students', studentRoutes);
 router.use('/:batchId/holidays', holidayRoutes);
 router.use('/:batchId/attendance/trainers', trainerAttendanceRoutes);
 router.use('/:batchId/attendance/students', studentAttendanceRoutes);
+
+// ─── Nested Sub-Routers for Exams, Results & Certificates ──────
+router.use('/:batchId/exams', examRoutes);
+router.use('/:batchId/results', resultRoutes);
+router.use('/:batchId/certificates', certificateRoutes);
 
 // ─── Protected Routes (Read access for all logged in roles) ──
 router.get('/', getBatches);

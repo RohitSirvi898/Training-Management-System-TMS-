@@ -5,13 +5,15 @@ import batchService from '../services/batchService';
 import toast from 'react-hot-toast';
 import { HiOutlineArrowLeft, HiOutlineLibrary, HiOutlineUsers, HiOutlineDesktopComputer } from 'react-icons/hi';
 
-// Tabs
 import LabsTab from '../components/batches/LabsTab';
 import TrainersTab from '../components/batches/TrainersTab';
 import StudentsTab from '../components/batches/StudentsTab';
 import HolidaysTab from '../components/batches/HolidaysTab';
 import TrainerAttendanceTab from '../components/batches/TrainerAttendanceTab';
 import StudentAttendanceTab from '../components/batches/StudentAttendanceTab';
+import ExamsTab from '../components/batches/ExamsTab';
+import ResultsTab from '../components/batches/ResultsTab';
+import CertificatesTab from '../components/batches/CertificatesTab';
 
 const BatchDetails = () => {
   const { id } = useParams();
@@ -59,7 +61,10 @@ const BatchDetails = () => {
     { id: 'students', label: 'Students', icon: HiOutlineUsers },
     { id: 'student-attd', label: 'Student Attd.', icon: HiOutlineUsers },
     { id: 'trainer-attd', label: 'Trainer Attd.', icon: HiOutlineLibrary },
-    { id: 'holidays', label: 'Holidays', icon: HiOutlineDesktopComputer }, 
+    { id: 'holidays', label: 'Holidays', icon: HiOutlineDesktopComputer },
+    { id: 'exams', label: 'Exams', icon: HiOutlineDesktopComputer },
+    { id: 'results', label: 'Results', icon: HiOutlineDesktopComputer },
+    { id: 'certificates', label: 'Certificates', icon: HiOutlineDesktopComputer },
   ];
 
   return (
@@ -116,6 +121,9 @@ const BatchDetails = () => {
         {activeTab === 'holidays' && <HolidaysTab batchId={batch._id} canManage={canManage} />}
         {activeTab === 'trainer-attd' && <TrainerAttendanceTab batchId={batch._id} canManage={canManage} />}
         {activeTab === 'student-attd' && <StudentAttendanceTab batchId={batch._id} canManage={canManage} isTrainer={isTrainer} />}
+        {activeTab === 'exams' && <ExamsTab batchId={batch._id} canManage={canManage} />}
+        {activeTab === 'results' && <ResultsTab batchId={batch._id} canManage={canManage} isTrainer={isTrainer} />}
+        {activeTab === 'certificates' && <CertificatesTab batchId={batch._id} canManage={canManage} />}
       </div>
     </div>
   );
